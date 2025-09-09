@@ -1,1 +1,0 @@
-/usr/bin/c++ -Wl,--dependency-file=CMakeFiles/tui_db.dir/link.d CMakeFiles/tui_db.dir/src/main.cpp.o -o tui_db  _deps/ftxui-build/libftxui-screen.a _deps/ftxui-build/libftxui-dom.a _deps/ftxui-build/libftxui-component.a /usr/lib/libsoci_core.so /usr/lib/libsoci_sqlite3.so _deps/ftxui-build/libftxui-dom.a _deps/ftxui-build/libftxui-screen.a

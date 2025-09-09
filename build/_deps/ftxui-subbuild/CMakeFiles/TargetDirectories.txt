@@ -1,3 +1,0 @@
-/home/kernel/Desktop/TUIBD/build/_deps/ftxui-subbuild/CMakeFiles/ftxui-populate.dir
-/home/kernel/Desktop/TUIBD/build/_deps/ftxui-subbuild/CMakeFiles/edit_cache.dir
-/home/kernel/Desktop/TUIBD/build/_deps/ftxui-subbuild/CMakeFiles/rebuild_cache.dir
