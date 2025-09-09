@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/kernel/Desktop/TUIBD/build/_deps/soci-subbuild/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
