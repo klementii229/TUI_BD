@@ -22,6 +22,9 @@ bool SQLiteConnector::Connect(const std::string& connectionString)
   } catch (const std::exception& e) {
     m_isConnected = false;
     // Можно залогировать ошибку (e.what())
+    //////////////////////////////////////
+    //////// WARNING /////////////////////
+    /////////////////////////////////////
     return false;
   }
 }

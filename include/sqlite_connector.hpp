@@ -1,8 +1,8 @@
 #pragma once
 #include "dataBaseInterface.hpp"
 
-using DatabaseRow = std::vector<std::string>;
-using DatabaseResultTable = std::vector<DatabaseRow>;
+// using DatabaseRow = std::vector<std::string>;
+// using DatabaseResultTable = std::vector<DatabaseRow>;
 
 class SQLiteConnector : public IDatabaseConnector
 {
