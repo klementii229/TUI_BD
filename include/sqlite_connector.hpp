@@ -11,6 +11,8 @@ private:
   bool m_isConnected = false;
 
 public:
+  SQLiteConnector() = default;
+
   bool Connect(const std::string& connectionString) override;
 
   void Disconnect() override;

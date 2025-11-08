@@ -1,12 +1,11 @@
 // sqlite_connector.h
+#include <print>
+
 #include "sqlite_connector.hpp"
 
 #include <soci/sqlite3/soci-sqlite3.h>
 
 #include "dataBaseInterface.hpp"
-
-using DatabaseRow = std::vector<std::string>;
-using DatabaseResultTable = std::vector<DatabaseRow>;
 
 SQLiteConnector::~SQLiteConnector()
 {
@@ -21,10 +20,7 @@ bool SQLiteConnector::Connect(const std::string& connectionString)
     return true;
   } catch (const std::exception& e) {
     m_isConnected = false;
-    // Можно залогировать ошибку (e.what())
-    //////////////////////////////////////
-    //////// WARNING /////////////////////
-    /////////////////////////////////////
+    std::print("{}", e.what());
     return false;
   }
 }
@@ -47,16 +43,42 @@ DatabaseResultTable SQLiteConnector::ExecuteQuery(const std::string& query)
     return result;
   }
 
-  soci::rowset<soci::row> rs = (m_session.prepare << query);
+  try {
+    soci::rowset<soci::row> rs = (m_session.prepare << query);
 
-  for (const auto& row : rs) {
-    DatabaseRow currentRow;
-    for (std::size_t i = 0; i != row.size(); ++i) {
-      // Просто преобразуем все в строку
-      currentRow.push_back(row.get<std::string>(i));
+    for (const auto& row : rs) {
+      DatabaseRow currentRow;
+      for (std::size_t i = 0; i != row.size(); ++i) {
+        auto dtype = row.get_properties(i).get_data_type();
+
+        switch (dtype) {
+          case soci::dt_string:
+            currentRow.push_back(row.get<std::string>(i));
+            break;
+          case soci::dt_integer:
+            currentRow.push_back(std::to_string(row.get<int>(i)));
+            break;
+          case soci::dt_double:
+            currentRow.push_back(std::to_string(row.get<double>(i)));
+            break;
+          case soci::dt_date: {
+            // Обрабатываем дату/время
+            std::tm when = row.get<std::tm>(i);
+            char buffer[80];
+            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &when);
+            currentRow.push_back(buffer);
+          } break;
+          default:
+            currentRow.push_back("<?>");
+            break;
+        }
+      }
+      result.push_back(currentRow);
     }
-    result.push_back(currentRow);
+  } catch (const std::exception& e) {
+    std::println("Query '{}' failed: {}", query, e.what());
   }
+
   return result;
 }
 

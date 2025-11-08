@@ -19,7 +19,6 @@ enum class DatabaseType : std::uint8_t
 class IDatabaseConnector
 {
 public:
-  virtual ~IDatabaseConnector() = default;
   // Чисто виртуальные методы, которые должны быть реализованы
   virtual bool Connect(const std::string& connectionString) = 0;
   virtual void Disconnect() = 0;
@@ -35,5 +34,7 @@ public:
   virtual DatabaseResultTable GetTableSchema(const std::string& tableName) = 0;
 
   // Можно добавить метод для получения имени типа БД
-  virtual DatabaseType GetDatabaseType() const = 0;
+  virtual DatabaseType GetDatabaseType() const = 0;  // а зачем он?
+
+  virtual ~IDatabaseConnector() = default;
 };
