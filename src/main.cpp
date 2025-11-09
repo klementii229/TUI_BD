@@ -1,24 +1,36 @@
+#include <algorithm>
+#include <memory>
 #include <print>
 
 #include <ftxui/dom/elements.hpp>
 #include <ftxui/screen/screen.hpp>
 
-#include "dataBaseInterface.hpp"
-#include "sqlite_connector.hpp"
+#include "databaseFactory.hpp"
+
 using namespace ftxui;
+using DatabaseRow = std::vector<std::string>;
+using DatabaseResultTable = std::vector<DatabaseRow>;
 
 int main()
 {
   DatabaseResultTable result {};
-  SQLiteConnector SQLite {};
-  SQLite.Connect("test.db");
-  result = SQLite.ExecuteQuery("select * from users;");
-  SQLite.Disconnect();
-  for (const auto& row : result) {
-    for (const auto& cell : row) {
-      std::print("{} ", cell);
+
+  std::unique_ptr<IDatabaseConnector> sqlite = Factory::MakeSQLiteConn();
+
+  if (sqlite->Connect("test.db")) {
+    result = sqlite->ExecuteQuery("select * from users;");
+    sqlite->Disconnect();
+
+    // Выводим результат
+    for (const auto& row : result) {
+      for (const auto& cell : row) {
+        std::print("{} ", cell);
+      }
+      std::println("");
     }
-    std::println("");  // новая строка после каждой строки
+  } else {
+    std::println("Failed to connect to database!");
   }
+
   return 0;
 }

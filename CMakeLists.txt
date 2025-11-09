@@ -3,7 +3,7 @@ project(TUI_DB)
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # ================================
 # Ищем SOCI и его бэкенды
 # ================================
@@ -13,6 +13,7 @@ find_library(SOCI_CORE_LIB soci_core)
 find_library(SOCI_SQLITE_LIB soci_sqlite3)
 find_library(SOCI_POSTGRESQL_LIB soci_postgresql)
 find_library(SOCI_MYSQL_LIB soci_mysql)
+include_directories(/usr/include/mysql)
 
 if(NOT SOCI_INCLUDE_DIR OR NOT SOCI_CORE_LIB)
     message(FATAL_ERROR "SOCI not found! Установи libsoci-dev и нужные бэкенды.")
@@ -43,6 +44,7 @@ target_include_directories(tui_db
   PRIVATE
     ${SOCI_INCLUDE_DIR}
     include
+     /usr/include/mysql
 )
 
 # ================================

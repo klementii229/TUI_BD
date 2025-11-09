@@ -5,7 +5,6 @@
 
 #include <soci/soci.h>
 
-// Собственный "легкий" тип для представления строки результата
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
@@ -13,7 +12,7 @@ enum class DatabaseType : std::uint8_t
 {
   Sqlite,
   Postgres,
-  Mariadb
+  MariaDB
 };
 
 class IDatabaseConnector
