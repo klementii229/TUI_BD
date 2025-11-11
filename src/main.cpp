@@ -1,15 +1,13 @@
-#include <algorithm>
 #include <memory>
 #include <print>
 
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/screen/screen.hpp>
 
 #include "databaseFactory.hpp"
 
 using namespace ftxui;
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
+
 
 int main()
 {

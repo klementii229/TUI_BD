@@ -1,11 +1,9 @@
-// sqlite_connector.h
 #include <print>
-
+#include <string>
 #include "sqlite_connector.hpp"
-
 #include <soci/sqlite3/soci-sqlite3.h>
-
 #include "dataBaseInterface.hpp"
+#include <array>
 
 SQLiteConnector::~SQLiteConnector()
 {
@@ -64,9 +62,9 @@ DatabaseResultTable SQLiteConnector::ExecuteQuery(const std::string& query)
           case soci::dt_date: {
             // Обрабатываем дату/время
             std::tm when = row.get<std::tm>(i);
-            char buffer[80];
-            std::strftime(buffer, sizeof(buffer), "%Y-%m-%d %H:%M:%S", &when);
-            currentRow.push_back(buffer);
+            std::array<char, 80> buffer {};
+            std::strftime(buffer.data(), buffer.size(), "%Y-%m-%d %H:%M:%S", &when);
+            currentRow.push_back(std::string(buffer.data()));
           } break;
           default:
             currentRow.push_back("<?>");
