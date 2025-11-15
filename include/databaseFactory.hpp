@@ -7,7 +7,7 @@
 
 namespace Factory
 {
-std::unique_ptr<SQLiteConnector> MakeSQLiteConn(void);
-std::unique_ptr<MariadbConnector> MakeMariaDBConn(void);
-std::unique_ptr<PostgresConnector> MakePostgresConn(void);
+std::unique_ptr<SQLiteConnector> MakeSQLiteConn();
+std::unique_ptr<MariadbConnector> MakeMariaDBConn();
+std::unique_ptr<PostgresConnector> MakePostgresConn();
 }
