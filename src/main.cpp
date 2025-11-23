@@ -1,16 +1,15 @@
-#include <cstdlib>
 #include <memory>
 #include <print>
 #include <string>
 #include <vector>
 #include "dataBaseInterface.hpp"
 #include "databaseFactory.hpp"
-
+#include "TerminalOut.hpp"
 // using namespace ftxui;
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
-std::unique_ptr<IDatabaseConnector> CLIParser(int argc, char *argv[]);
+std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]);
 
 int main(int argc, char* argv[])
 {
@@ -22,10 +21,9 @@ int main(int argc, char* argv[])
     return 0;
   }
 
-
-  std::unique_ptr<IDatabaseConnector> DBConnector = CLIParser(argc, argv);
-
-
+  TerminalOut Out = {};
+  Out.Render();
+  std::unique_ptr<IDatabaseConnector> DBConnector = CreateConnector(argc, argv);
   DatabaseResultTable result {};
 
   if (DBConnector->Connect("test.db")) {
@@ -47,15 +45,7 @@ int main(int argc, char* argv[])
 }
 
 
-
-
-
-
-
-
-std::unique_ptr<IDatabaseConnector> CLIParser(int argc, char *argv[]) {
-
-
+std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]) {
 
   for (int i = 1; i < argc; ++i) {
     std::string arg = argv[i];

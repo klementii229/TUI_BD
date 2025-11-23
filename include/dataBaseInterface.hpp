@@ -1,7 +1,6 @@
 #pragma once
 #include <string>
 #include <vector>
-
 #include <soci/soci.h>
 
 using DatabaseRow = std::vector<std::string>;
@@ -13,7 +12,13 @@ enum class DatabaseType : std::uint8_t
   Postgres,
   MariaDB
 };
+/*Create — INSERT (создание записей),
 
+Read — SELECT (чтение записей),
+
+Update — UPDATE (редактирование записей),
+
+Delete — DELETE (удаление записей). */
 class IDatabaseConnector
 {
 public:
