@@ -14,10 +14,8 @@ bool SQLiteConnector::Connect(const std::string& connectionString)
 {
   try {
     m_session.open(soci::sqlite3, connectionString);
-    m_isConnected = true;
     return true;
   } catch (const std::exception& e) {
-    m_isConnected = false;
     std::print("{}", e.what());
     return false;
   }
@@ -26,12 +24,11 @@ bool SQLiteConnector::Connect(const std::string& connectionString)
 void SQLiteConnector::Disconnect()
 {
   m_session.close();
-  m_isConnected = false;
 }
 
 bool SQLiteConnector::IsConnected() const
 {
-  return m_isConnected;
+  return m_session.is_connected();
 }
 
 DatabaseResultTable SQLiteConnector::ExecuteQuery(const std::string& query)

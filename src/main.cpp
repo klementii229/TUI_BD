@@ -16,8 +16,8 @@ int main(int argc, char* argv[])
     if(DBConnector == nullptr) return 1;
 
   TerminalOut Out = {};
-  Out.Render();
-
+  Out.Run();
+std::println("\033[2J\033[H");
   DatabaseResultTable result {};
 
   if (DBConnector->Connect("test.db")) {

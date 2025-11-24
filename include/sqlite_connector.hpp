@@ -5,7 +5,6 @@ class SQLiteConnector : public IDatabaseConnector
 {
 private:
   soci::session m_session;
-  bool m_isConnected = false;
 
 public:
   SQLiteConnector() = default;
