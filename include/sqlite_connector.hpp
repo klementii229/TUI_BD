@@ -1,5 +1,5 @@
 #pragma once
-#include "dataBaseInterface.hpp"
+#include "DataBaseInterface.hpp"
 
 class SQLiteConnector : public IDatabaseConnector
 {

@@ -1,7 +1,7 @@
 #pragma once
 #include <soci/postgresql/soci-postgresql.h>
 
-#include "dataBaseInterface.hpp"
+#include "DataBaseInterface.hpp"
 
 class PostgresConnector : public IDatabaseConnector
 {

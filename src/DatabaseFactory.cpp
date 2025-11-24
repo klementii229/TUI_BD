@@ -1,5 +1,5 @@
 
-#include "databaseFactory.hpp"
+#include "DataBaseFactory.hpp"
 
 std::unique_ptr<SQLiteConnector> Factory::MakeSQLiteConn()
 {

@@ -2,7 +2,7 @@
 #include <string>
 #include "sqlite_connector.hpp"
 #include <soci/sqlite3/soci-sqlite3.h>
-#include "dataBaseInterface.hpp"
+#include "DataBaseInterface.hpp"
 #include <array>
 
 SQLiteConnector::~SQLiteConnector()
