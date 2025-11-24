@@ -4,7 +4,7 @@
 
 #include "databaseFactory.hpp"
 
-using namespace ftxui;
+
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
