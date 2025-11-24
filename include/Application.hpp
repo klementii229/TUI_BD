@@ -1,6 +1,4 @@
 #pragma once
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/screen/screen.hpp>
 
 
 class Application {
