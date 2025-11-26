@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
   TerminalOut Out = {};
   Out.Run();
 std::println("\033[2J\033[H");
-  DatabaseResultTable result {};
+  /*DatabaseResultTable result {};
 
   if (DBConnector->Connect("test.db")) {
     result = DBConnector->ExecuteQuery("select * from users;");
@@ -33,7 +33,7 @@ std::println("\033[2J\033[H");
     }
   } else {
     std::println("Failed to connect to database!");
-  }
+    }*/
 
   return 0;
 }
