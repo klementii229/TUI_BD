@@ -1,52 +1,36 @@
+#include "DataBaseFactory.hpp"
+#include "DataBaseInterface.hpp"
+#include "LoginForm.hpp"
+#include <cstdlib>
 #include <memory>
 #include <print>
 #include <string>
 #include <vector>
-#include "DataBaseInterface.hpp"
-#include "DataBaseFactory.hpp"
-#include "TerminalOut.hpp"
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
-std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]);
+// std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]);
 
-int main(int argc, char* argv[])
-{
-    std::unique_ptr<IDatabaseConnector> DBConnector = CreateConnector(argc, argv);
-    if(DBConnector == nullptr) return 1;
+int main(void) {
 
-  TerminalOut Out = {};
-  Out.Run();
-std::println("\033[2J\033[H");
-  /*DatabaseResultTable result {};
-
-  if (DBConnector->Connect("test.db")) {
-    result = DBConnector->ExecuteQuery("select * from users;");
-    DBConnector->Disconnect();
-
-    // Выводим результат
-    for (const auto& row : result) {
-      for (const auto& cell : row) {
-        std::print("{} ", cell);
-      }
-      std::println("");
-    }
-  } else {
-    std::println("Failed to connect to database!");
-    }*/
-
+  LoginForm Form = {};
+  Form.RUN();
+  auto [host, port, database, username, password, db_type] =
+      Form.GetConnectionParams();
+  std::println("\n{} {} {} {} {} {}", host, port, database, username, password,
+               db_type);
+  system("fastfetch");
   return 0;
 }
 
-
 std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]) {
-    if (argc != 2) {
-      std::println(
-              "\033[31mИспользование: {} --sqlite | --postgresql | "
-              "--mariadb\033[0m\n" "\033[31mИспользуй --help для справки\033[0m",
-              argv[0]);
-      return nullptr;
-    }
+  if (argc != 2) {
+    std::println("\033[31mИспользование: {} --sqlite | --postgresql | "
+                 "--mariadb\033[0m\n"
+                 "\033[31mИспользуй --help для справки\033[0m",
+                 argv[0]);
+    return nullptr;
+  }
 
   for (int i = 1; i < argc; ++i) {
     std::string arg = argv[i];
@@ -56,18 +40,15 @@ std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]) {
       std::exit(1);
     }
 
-    else if (arg == "--sqlite")
-    {
+    else if (arg == "--sqlite") {
       return Factory::MakeSQLiteConn();
     }
 
-    else if (arg == "--postgresql")
-    {
+    else if (arg == "--postgresql") {
       return Factory::MakePostgresConn();
     }
 
-    else if (arg == "--mariadb")
-    {
+    else if (arg == "--mariadb") {
       return Factory::MakeMariaDBConn();
     }
   }

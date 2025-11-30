@@ -2,8 +2,7 @@
 
 #include "DataBaseInterface.hpp"
 
-class MariadbConnector : public IDatabaseConnector
-{
+class MariadbConnector : public IDatabaseConnector {
 private:
   soci::session m_session;
   bool m_isConnected = false;
@@ -11,13 +10,13 @@ private:
 public:
   MariadbConnector() = default;
 
-  bool Connect(const std::string& connectionString) override;
+  bool Connect(const std::string &connectionString) override;
   void Disconnect() override;
   bool IsConnected() const override;
-  bool ExecuteCommand(const std::string& command) override;
-  DatabaseResultTable ExecuteQuery(const std::string& query) override;
+  bool ExecuteCommand(const std::string &command) override;
+  DatabaseResultTable ExecuteQuery(const std::string &query) override;
   std::vector<std::string> GetTableList() override;
-  DatabaseResultTable GetTableSchema(const std::string& tableName) override;
+  DatabaseResultTable GetTableSchema(const std::string &tableName) override;
   DatabaseType GetDatabaseType() const override;
 
   ~MariadbConnector() override;

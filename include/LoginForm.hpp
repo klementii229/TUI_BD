@@ -1,14 +1,18 @@
 #pragma once
-#include <ftxui/dom/elements.hpp>
-#include <ftxui/screen/screen.hpp>
 #include <ftxui/component/component.hpp>
 #include <ftxui/component/screen_interactive.hpp>
-class TerminalOut {
-public:
-  TerminalOut();
-  void Run();
-  ftxui::Component CreateConnectionForm();
+#include <ftxui/dom/elements.hpp>
+#include <ftxui/screen/screen.hpp>
 
+using ConnectionTuple = std::tuple<std::string, std::string, std::string,
+                                   std::string, std::string, std::string>;
+
+class LoginForm {
+public:
+  LoginForm();
+  void RUN();
+  ftxui::Component CreateConnectionForm();
+  ConnectionTuple GetConnectionParams() const;
   struct ConnectionData {
     std::string host = "localhost";
     std::string port = "5432";
@@ -32,5 +36,5 @@ private:
   ftxui::Component connect_button;
 
   int db_type_selected = 0;
-  std::vector<std::string> db_types = {"PostgreSQL", "MariaDB"};
+  std::vector<std::string> db_types = {"PostgreSQL", "MariaDB", "SQLite"};
 };
