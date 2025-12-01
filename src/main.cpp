@@ -1,6 +1,7 @@
 #include "DataBaseFactory.hpp"
 #include "DataBaseInterface.hpp"
 #include "LoginForm.hpp"
+#include "DatabaseExplorer.hpp"
 #include <cstdlib>
 #include <memory>
 #include <print>
@@ -17,9 +18,11 @@ int main(void) {
   Form.RUN();
   auto [host, port, database, username, password, db_type] =
       Form.GetConnectionParams();
-  std::println("\n{} {} {} {} {} {}", host, port, database, username, password,
-               db_type);
-  system("fastfetch");
+      std::unique_ptr<IDatabaseConnector> conn = Factory::MakeSQLiteConn();
+      conn->Connect(database);
+      DataBaseExplorer exp = {std::move(conn)};
+      exp.RUN();
+
   return 0;
 }
 

@@ -26,7 +26,6 @@ private:
   ftxui::ScreenInteractive screen;
   ConnectionData connection_data;
 
-  // Делаем компоненты членами класса
   ftxui::Component host_input;
   ftxui::Component port_input;
   ftxui::Component db_input;
