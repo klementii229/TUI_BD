@@ -18,9 +18,10 @@ private:
   DatabaseResultTable resultTable;
   ftxui::ScreenInteractive screen;
 
-  ftxui::Component m_component;
-  ftxui::Component req_imput;
+  ftxui::Component form_container;
+  ftxui::Component req_input;
   ftxui::Component btn_send_req;
+  ftxui::Component btn_close;
 
   std::string t_request {};
 };
