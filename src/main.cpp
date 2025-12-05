@@ -1,7 +1,7 @@
 #include "DataBaseFactory.hpp"
 #include "DataBaseInterface.hpp"
-#include "LoginForm.hpp"
 #include "DatabaseExplorer.hpp"
+#include "LoginForm.hpp"
 #include <cstdlib>
 #include <memory>
 #include <print>
@@ -10,18 +10,16 @@
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
-// std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]);
-
 int main(void) {
 
   LoginForm Form = {};
   Form.RUN();
   auto [host, port, database, username, password, db_type] =
       Form.GetConnectionParams();
-      std::unique_ptr<IDatabaseConnector> conn = Factory::MakeSQLiteConn();
-      conn->Connect(database);
-      DataBaseExplorer exp = {std::move(conn)};
-      exp.RUN();
+  std::unique_ptr<IDatabaseConnector> conn = Factory::MakeSQLiteConn();
+  conn->Connect("test.db");
+  DataBaseExplorer exp = {std::move(conn)};
+  exp.RUN();
 
   return 0;
 }
