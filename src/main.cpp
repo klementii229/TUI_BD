@@ -5,6 +5,7 @@
 #include <cstdlib>
 #include <memory>
 #include <print>
+#include <soci/soci-backend.h>
 #include <string>
 #include <vector>
 using DatabaseRow = std::vector<std::string>;
@@ -16,7 +17,16 @@ int main(void) {
   Form.RUN();
   auto [host, port, database, username, password, db_type] =
       Form.GetConnectionParams();
-  std::unique_ptr<IDatabaseConnector> conn = Factory::MakeSQLiteConn();
+  std::unique_ptr<IDatabaseConnector> conn = nullptr;
+  if (db_type == "SQLite") {
+    conn = Factory::MakeSQLiteConn();
+  } else if (db_type == "PostgreSQL") {
+    conn = Factory::MakePostgresConn();
+  } else if (db_type == "MariaDB") {
+    conn = Factory::MakeMariaDBConn();
+  } else {
+    return 1;
+  }
   conn->Connect("test.db");
   DataBaseExplorer exp = {std::move(conn)};
   exp.RUN();
