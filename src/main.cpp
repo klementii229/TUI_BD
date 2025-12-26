@@ -1,10 +1,7 @@
-#include "DataBaseFactory.hpp"
-#include "DataBaseInterface.hpp"
 #include "DatabaseExplorer.hpp"
 #include "LoginForm.hpp"
-#include <cstdlib>
+#include "sqlite_connector.hpp"
 #include <memory>
-#include <print>
 #include <soci/soci-backend.h>
 #include <string>
 #include <vector>
@@ -19,11 +16,7 @@ int main(void) {
       Form.GetConnectionParams();
   std::unique_ptr<IDatabaseConnector> conn = nullptr;
   if (db_type == "SQLite") {
-    conn = Factory::MakeSQLiteConn();
-  } else if (db_type == "PostgreSQL") {
-    conn = Factory::MakePostgresConn();
-  } else if (db_type == "MariaDB") {
-    conn = Factory::MakeMariaDBConn();
+    conn = std::make_unique<SQLiteConnector>();
   } else {
     return 1;
   }
@@ -32,36 +25,4 @@ int main(void) {
   exp.RUN();
 
   return 0;
-}
-
-std::unique_ptr<IDatabaseConnector> CreateConnector(int argc, char *argv[]) {
-  if (argc != 2) {
-    std::println("\033[31mИспользование: {} --sqlite | --postgresql | "
-                 "--mariadb\033[0m\n"
-                 "\033[31mИспользуй --help для справки\033[0m",
-                 argv[0]);
-    return nullptr;
-  }
-
-  for (int i = 1; i < argc; ++i) {
-    std::string arg = argv[i];
-
-    if (arg == "--help" || arg == "-h") {
-      std::println("Помощь: используй --sqlite, --postgresql, --mariadb");
-      std::exit(1);
-    }
-
-    else if (arg == "--sqlite") {
-      return Factory::MakeSQLiteConn();
-    }
-
-    else if (arg == "--postgresql") {
-      return Factory::MakePostgresConn();
-    }
-
-    else if (arg == "--mariadb") {
-      return Factory::MakeMariaDBConn();
-    }
-  }
-  return nullptr;
 }
