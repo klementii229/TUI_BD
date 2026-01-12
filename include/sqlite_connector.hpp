@@ -3,7 +3,6 @@
 
 class SQLiteConnector : public IDatabaseConnector {
 private:
-  soci::session m_session;
 
 public:
   SQLiteConnector() = default;
@@ -22,6 +21,5 @@ public:
 
   DatabaseResultTable GetTableSchema(const std::string &tableName) override;
 
-  DatabaseType GetDatabaseType() const override;
   ~SQLiteConnector() override;
 };

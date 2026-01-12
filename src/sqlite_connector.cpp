@@ -95,7 +95,3 @@ SQLiteConnector::GetTableSchema(const std::string &tableName) {
   // SQLite-специфичный запрос
   return ExecuteQuery("PRAGMA table_info(" + tableName + ")");
 }
-
-DatabaseType SQLiteConnector::GetDatabaseType() const {
-  return DatabaseType::Sqlite;
-}

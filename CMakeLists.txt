@@ -4,28 +4,28 @@ project(TUI_DB)
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# ================================
-# Ищем SOCI и его бэкенды
-# ================================
-find_path(SOCI_INCLUDE_DIR soci/soci.h)
 
-find_library(SOCI_CORE_LIB soci_core)
-find_library(SOCI_SQLITE_LIB soci_sqlite3)
-find_library(SOCI_POSTGRESQL_LIB soci_postgresql)
-find_library(SOCI_MYSQL_LIB soci_mysql)
-include_directories(/usr/include/mysql)
+# ================================
+# Поиск библиотек: SQLiteCpp и libpqxx
+# ================================
+find_package(Threads REQUIRED)
+find_package(PkgConfig REQUIRED)
 
-if(NOT SOCI_INCLUDE_DIR OR NOT SOCI_CORE_LIB)
-    message(FATAL_ERROR "SOCI not found! Установи libsoci-dev и нужные бэкенды.")
-endif()
+# Поиск libpqxx через pkg-config
+pkg_check_modules(PQXX REQUIRED libpqxx)
+
+# Указываем пути к SQLiteCpp вручную
+set(SQLITECPP_INCLUDE_DIR "/usr/local/include")
+set(SQLITECPP_LIBRARY "/usr/local/lib/libSQLiteCpp.a")
 
 # ================================
 # Добавляем FTXUI
 # ================================
 include(FetchContent)
-FetchContent_Declare(ftxui
-  GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI
-  GIT_TAG v6.1.9
+FetchContent_Declare(
+    ftxui
+    GIT_REPOSITORY https://github.com/ArthurSonzogni/FTXUI
+    GIT_TAG v6.1.9
 )
 FetchContent_MakeAvailable(ftxui)
 
@@ -41,46 +41,21 @@ add_executable(tui_db ${SOURCES} ${HEADERS})
 # Include директории
 # ================================
 target_include_directories(tui_db
-  PRIVATE
-    ${SOCI_INCLUDE_DIR}
-    include
-     /usr/include/mysql
+    PRIVATE
+        ${SQLITECPP_INCLUDE_DIR}
+        ${PQXX_INCLUDE_DIRS}
+        include
 )
 
 # ================================
 # Линковка библиотек
 # ================================
 target_link_libraries(tui_db
-  PRIVATE
-    ftxui::screen
-    ftxui::dom
-    ftxui::component
-    ${SOCI_CORE_LIB}
+    PRIVATE
+        ftxui::screen
+        ftxui::dom
+        ftxui::component
+        ${SQLITECPP_LIBRARY}
+        ${PQXX_LIBRARIES}
+        Threads::Threads
 )
-
-if(SOCI_SQLITE_LIB)
-    target_link_libraries(tui_db PRIVATE ${SOCI_SQLITE_LIB})
-endif()
-
-if(SOCI_POSTGRESQL_LIB)
-    find_library(POSTGRESQL_LIB pq)
-    if(POSTGRESQL_LIB)
-        target_link_libraries(tui_db PRIVATE ${SOCI_POSTGRESQL_LIB} ${POSTGRESQL_LIB})
-    else()
-        message(WARNING "PostgreSQL client library (libpq) not found, PostgreSQL backend отключён")
-    endif()
-endif()
-
-if(SOCI_MYSQL_LIB)
-    find_library(MARIADB_LIB mariadb)
-    if(MARIADB_LIB)
-        target_link_libraries(tui_db PRIVATE ${SOCI_MYSQL_LIB} ${MARIADB_LIB})
-    else()
-        find_library(MYSQLCLIENT_LIB mysqlclient)
-        if(MYSQLCLIENT_LIB)
-            target_link_libraries(tui_db PRIVATE ${SOCI_MYSQL_LIB} ${MYSQLCLIENT_LIB})
-        else()
-            message(WARNING "MySQL/MariaDB client library not found, MySQL backend отключён")
-        endif()
-    endif()
-endif()

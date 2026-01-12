@@ -1,12 +1,11 @@
 #pragma once
-#include <soci/soci.h>
 #include <string>
 #include <vector>
 
 using DatabaseRow = std::vector<std::string>;
 using DatabaseResultTable = std::vector<DatabaseRow>;
 
-enum class DatabaseType : std::uint8_t { Sqlite, Postgres, MariaDB };
+//enum class DatabaseType : std::uint8_t { Sqlite, Postgres, MariaDB };
 /*Create — INSERT (создание записей),
 
 Read — SELECT (чтение записей),
@@ -29,9 +28,6 @@ public:
   // Методы для получения метаданных (схемы БД)
   virtual std::vector<std::string> GetTableList() = 0;
   virtual DatabaseResultTable GetTableSchema(const std::string &tableName) = 0;
-
-  // Можно добавить метод для получения имени типа БД
-  virtual DatabaseType GetDatabaseType() const = 0; // а зачем он?
 
   virtual ~IDatabaseConnector() = default;
 };
