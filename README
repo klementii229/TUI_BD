@@ -1,23 +1,27 @@
-## **Зависимости:**
+# Зависимости:
 
-1. FTXUI (auto install)
-2. pkg-config
-3. libpqxx-dev
-4. libsqlite3-dev
-5. SQLiteCpp
+1.  FTXUI (auto install)
+2.  pkg-config
+3.  libpqxx-dev
+4.  libsqlite3-dev
+5.  SQLiteCpp
+
+Для установки выполните следующие команды в терминале:
 
 ```bash
-# Зависимости компиляции
+# 1. Обновление пакетов и установка инструментов сборки
 sudo apt update
 sudo apt install build-essential cmake pkg-config
 
-# libpqxx и SQLite
+# 2. Установка зависимостей из репозитория
 sudo apt install libpqxx-dev libsqlite3-dev
 
+# 3. Сборка и установка SQLiteCpp из исходного кода
 git clone https://github.com/SRombauts/SQLiteCpp.git
 cd SQLiteCpp
 mkdir build && cd build
-cmake .. -DSQLITECPP_BUILD_TESTS=OFF -DSQLITECPP_BUILD_EXAMPLES=OFF
+cmake .. -DSQLITECPP_BUILD_TESTS=OFF \
+         -DSQLITECPP_BUILD_EXAMPLES=OFF
 make
 sudo make install
 ```
