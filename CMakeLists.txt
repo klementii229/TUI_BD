@@ -6,17 +6,16 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 # ================================
-# Поиск библиотек: SQLiteCpp и libpqxx
+# Поиск библиотек: libsqlite3 и libpq
 # ================================
 find_package(Threads REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-# Поиск libpqxx через pkg-config
-pkg_check_modules(PQXX REQUIRED libpqxx)
+# Поиск libpq (PostgreSQL)
+pkg_check_modules(LIBPQ REQUIRED libpq)
 
-# Указываем пути к SQLiteCpp вручную
-set(SQLITECPP_INCLUDE_DIR "/usr/local/include")
-set(SQLITECPP_LIBRARY "/usr/local/lib/libSQLiteCpp.a")
+# Поиск libsqlite3
+pkg_check_modules(SQLITE3 REQUIRED sqlite3)
 
 # ================================
 # Добавляем FTXUI
@@ -42,8 +41,8 @@ add_executable(tui_db ${SOURCES} ${HEADERS})
 # ================================
 target_include_directories(tui_db
     PRIVATE
-        ${SQLITECPP_INCLUDE_DIR}
-        ${PQXX_INCLUDE_DIRS}
+        ${SQLITE3_INCLUDE_DIRS}
+        ${LIBPQ_INCLUDE_DIRS}
         include
 )
 
@@ -55,7 +54,7 @@ target_link_libraries(tui_db
         ftxui::screen
         ftxui::dom
         ftxui::component
-        ${SQLITECPP_LIBRARY}
-        ${PQXX_LIBRARIES}
+        ${SQLITE3_LIBRARIES}
+        ${LIBPQ_LIBRARIES}
         Threads::Threads
 )
