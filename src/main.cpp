@@ -2,7 +2,6 @@
 #include "LoginForm.hpp"
 #include "sqlite_connector.hpp"
 #include <memory>
-#include <soci/soci-backend.h>
 #include <string>
 #include <vector>
 using DatabaseRow = std::vector<std::string>;
@@ -12,7 +11,7 @@ int main(void) {
 
   LoginForm Form = {};
   Form.RUN();
-  auto [host, port, database, username, password, db_type] =
+ /*  auto [host, port, database, username, password, db_type] =
       Form.GetConnectionParams();
   std::unique_ptr<IDatabaseConnector> conn = nullptr;
   if (db_type == "SQLite") {
@@ -23,6 +22,6 @@ int main(void) {
   conn->Connect("test.db");
   DataBaseExplorer exp = {std::move(conn)};
   exp.RUN();
-
+*/
   return 0;
 }

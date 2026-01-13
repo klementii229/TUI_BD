@@ -1,31 +1,3 @@
-<<<<<<< HEAD
-# Зависимости:
-
-1.  FTXUI (auto install)
-2.  pkg-config
-3.  libpqxx-dev
-4.  libsqlite3-dev
-5.  SQLiteCpp
-
-Для установки выполните следующие команды в терминале:
-
-```bash
-# 1. Обновление пакетов и установка инструментов сборки
-sudo apt update
-sudo apt install build-essential cmake pkg-config
-
-# 2. Установка зависимостей из репозитория
-sudo apt install libpqxx-dev libsqlite3-dev
-
-# 3. Сборка и установка SQLiteCpp из исходного кода
-git clone https://github.com/SRombauts/SQLiteCpp.git
-cd SQLiteCpp
-mkdir build && cd build
-cmake .. -DSQLITECPP_BUILD_TESTS=OFF \
-         -DSQLITECPP_BUILD_EXAMPLES=OFF
-make
-sudo make install
-=======
 # TUI_DB
 
 Простое TUI-приложение для работы с базами данных SQLite и PostgreSQL.
@@ -48,5 +20,10 @@ sudo make install
 ```bash
 sudo apt update
 sudo apt install build-essential cmake pkg-config libpq-dev libsqlite3-dev
->>>>>>> 90c1ba8 (asd)
+```
+
+### На Archlinux:
+
+```bash
+sudo pacman -S base-devel cmake pkgconf postgresql-libs sqlite
 ```
