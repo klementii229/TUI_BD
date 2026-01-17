@@ -36,9 +36,10 @@ DataBaseExplorer::DataBaseExplorer(std::unique_ptr<IDatabaseConnector> conn_)
       current_page++;
     UpdateResultDisplay();
   });
-  pagination_row = ftxui::Container::Horizontal({btn_prev_page, btn_next_page});
+
+
   menu_cont = ftxui::Container::Vertical(
-      {req_input, btn_send_req, result_panel, pagination_row, btn_close});
+      {req_input, btn_send_req, result_panel, btn_close});
 
   form_container = ftxui::Renderer(menu_cont, [this] {
     return ftxui::vbox(
@@ -49,25 +50,17 @@ DataBaseExplorer::DataBaseExplorer(std::unique_ptr<IDatabaseConnector> conn_)
                 ftxui::hbox(req_input->Render(), btn_send_req->Render()),
                 ftxui::separator(),
 
-                result_panel->Render(), ftxui::separator(),
-
-                // Кнопки пагинации здесь
-                ftxui::hbox(btn_prev_page->Render(),
-                            ftxui::text(" Page " +
-                                        std::to_string(current_page) + "/" +
-                                        std::to_string(total_pages)) |
-                                ftxui::vcenter,
-                            btn_next_page->Render()) |
-                    ftxui::center,
+                result_panel->Render(),
                 ftxui::separator(),
 
                 btn_close->Render()}) |
            ftxui::border;
   });
 }
-ftxui::Component DataBaseExplorer::CreateForm() { return form_container; }
 
-void DataBaseExplorer::RUN() { screen.Loop(CreateForm()); }
+//ftxui::Component DataBaseExplorer::CreateForm() { return form_container; }
+
+void DataBaseExplorer::RUN() { screen.Loop(form_container); }
 
 void DataBaseExplorer::UpdateResultDisplay() {
   if (has_result == false) {
@@ -98,19 +91,23 @@ void DataBaseExplorer::UpdateResultDisplay() {
 
     auto table_element = table.Render();
 
-    // Пагинация С КНОПКАМИ
-    auto result_vbox =
-        ftxui::vbox({table_element, ftxui::separator(),
-                     ftxui::hbox(
-                         // Кнопки пагинации (будут интерактивны, если
-                         // вынесены в контейнер)
-                         btn_prev_page->Render(),
-                         ftxui::text(" Page " + std::to_string(current_page) +
-                                     "/" + std::to_string(total_pages)) |
-                             ftxui::vcenter,
-                         btn_next_page->Render()) |
-                         ftxui::center});
+    // Создаем контейнер для таблицы и пагинации
+    auto result_container = ftxui::Container::Vertical({
+        ftxui::Renderer([table_element] { return table_element; }),
+        ftxui::Container::Horizontal({
+            btn_prev_page,
+            ftxui::Renderer([this] {
+              return ftxui::text(" Page " + std::to_string(current_page) + "/" +
+                                 std::to_string(total_pages)) |
+                     ftxui::vcenter;
+            }),
+            btn_next_page,
+        }) | ftxui::center,
+    });
 
-    result_panel = ftxui::Renderer([result_vbox] { return result_vbox; });
+    result_panel = result_container;
   }
+
+  // Принудительно обновляем экран
+  screen.PostEvent(ftxui::Event::Custom);
 }

@@ -1,13 +1,11 @@
 #pragma once
-
-#include <ftxui/component/component.hpp>
 #include <memory>
 #include <string>
 
+#include <ftxui/component/component.hpp>
 #include <ftxui/component/component_base.hpp>
 #include <ftxui/component/component_options.hpp>
 #include <ftxui/component/screen_interactive.hpp>
-
 #include <ftxui/dom/node.hpp>
 
 #include "DataBaseInterface.hpp"
@@ -16,7 +14,6 @@ class DataBaseExplorer {
 public:
   DataBaseExplorer(std::unique_ptr<IDatabaseConnector> conn_);
   DataBaseExplorer() = delete;
-  ftxui::Component CreateForm();
   void RUN();
   void UpdateResultDisplay();
 
@@ -27,9 +24,7 @@ private:
 
   ftxui::Component form_container;
   ftxui::Component req_input;
-
   ftxui::Component menu_cont;
-  ftxui::Component pagination_row;
 
   ftxui::Component btn_send_req;
   ftxui::Component btn_close;
