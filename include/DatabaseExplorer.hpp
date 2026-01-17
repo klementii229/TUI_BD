@@ -19,7 +19,7 @@ class DataBaseExplorer {
 
   private:
     std::unique_ptr<IDatabaseConnector> conn;
-    DatabaseResultTable resultTable;
+    std::expected<DatabaseResultTable, std::string> resultTable;
     ftxui::ScreenInteractive screen;
 
     ftxui::Component form_container;

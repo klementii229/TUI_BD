@@ -1,4 +1,5 @@
 #pragma once
+#include <expected>
 #include <string>
 #include <vector>
 
@@ -7,25 +8,20 @@ using DatabaseResultTable = std::vector<DatabaseRow>;
 
 class IDatabaseConnector {
   public:
-    // Выполнить запрос и получить результат (для SELECT)
-    virtual DatabaseResultTable ExecuteQuery(const std::string &query) = 0;
-    // Выполнить команду (INSERT, UPDATE, DELETE)
-    virtual bool ExecuteCommand(const std::string &command) = 0;
-
-    // Методы для получения метаданных (схемы БД)
-    virtual std::vector<std::string> GetTableList() = 0;
-    virtual DatabaseResultTable
-    GetTableSchema(const std::string &tableName) = 0;
-    virtual ~IDatabaseConnector() = default;
     // ##########################################
-    virtual bool Connect(const std::string &connectionString) = 0;
+    virtual std::expected<DatabaseResultTable, std::string>
+    ExecuteQuery(const std::string &query) = 0; // Получение результатов с запроса
+    virtual std::expected<bool, std::string>
+    ExecuteCommand(const std::string &command) = 0; // Выполнение запроса без результата
+    // ##########################################
+
+    virtual std::expected<DatabaseRow, std::string> GetTableList() = 0; // Список таблиц в базе
+    virtual std::expected<DatabaseResultTable, std::string>
+    GetTableSchema(const std::string &tableName) = 0; // Схема конкретной бд
+
+    // ##########################################
+    virtual std::expected<bool, std::string> Connect(const std::string &connectionString) = 0;
     virtual void Disconnect() = 0;
+    // ##########################################
+    virtual ~IDatabaseConnector() = default;
 };
-
-/*Create — INSERT (создание записей),
-
-Read — SELECT (чтение записей),
-
-Update — UPDATE (редактирование записей),
-
-Delete — DELETE (удаление записей). */
