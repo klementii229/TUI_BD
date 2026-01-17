@@ -1,28 +1,28 @@
 #pragma once
-#include <sqlite3.h>
 #include "DataBaseInterface.hpp"
+#include <sqlite3.h>
 
 class sqlite3;
 
 class SQLiteConnector : public IDatabaseConnector {
-private:
-sqlite3* db = nullptr;
-sqlite3_stmt * stmt = nullptr;
+  private:
+    sqlite3 *db = nullptr;
+    sqlite3_stmt *stmt = nullptr;
 
-public:
-  SQLiteConnector() = default;
+  public:
+    SQLiteConnector() = default;
 
-  bool Connect(const std::string &connectionString) override;
+    bool Connect(const std::string &connectionString) override;
 
-  void Disconnect() override;
+    void Disconnect() override;
 
-  bool ExecuteCommand(const std::string &command) override;
+    bool ExecuteCommand(const std::string &command) override;
 
-  DatabaseResultTable ExecuteQuery(const std::string &query) override;
+    DatabaseResultTable ExecuteQuery(const std::string &query) override;
 
-  std::vector<std::string> GetTableList() override;
+    std::vector<std::string> GetTableList() override;
 
-  DatabaseResultTable GetTableSchema(const std::string &tableName) override;
+    DatabaseResultTable GetTableSchema(const std::string &tableName) override;
 
-  ~SQLiteConnector() override;
+    ~SQLiteConnector() override;
 };

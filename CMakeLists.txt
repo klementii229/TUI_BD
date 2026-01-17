@@ -56,5 +56,5 @@ target_link_libraries(tui_db
         ftxui::component
         ${SQLITE3_LIBRARIES}
         ${LIBPQ_LIBRARIES}
-        Threads::Threads
+        #Threads::Threads
 )
