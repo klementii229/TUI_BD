@@ -19,7 +19,7 @@ std::expected<DatabaseResultTable, std::string> SQLiteConnector::ExecuteQuery(co
     DatabaseResultTable result;
     sqlite3_stmt *stmt{};
 
-    int ret_code = sqlite3_prepare_v2(db, query.data(), -1, &stmt, NULL);
+    int ret_code = sqlite3_prepare_v2(db, query.data(), -1, &stmt, nullptr);
     if (ret_code != SQLITE_OK) {
         std::string error_message = sqlite3_errmsg(db);
         constexpr std::source_location loc = std::source_location::current();

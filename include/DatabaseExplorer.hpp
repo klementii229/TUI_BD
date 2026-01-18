@@ -36,7 +36,7 @@ class DataBaseExplorer {
     ftxui::Component result_panel;
     ftxui::Component result_container;
 
-    std::string t_request{};
+    std::string t_request;
     bool has_result = false;
     std::string last_err;
 

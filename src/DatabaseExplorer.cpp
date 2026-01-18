@@ -1,5 +1,4 @@
 #include <algorithm>
-#include <exception>
 
 #include "DatabaseExplorer.hpp"
 #include "ftxui/dom/elements.hpp"
@@ -27,20 +26,23 @@ DataBaseExplorer::DataBaseExplorer(std::unique_ptr<IDatabaseConnector> conn_)
     });
     btn_close = ftxui::Button("Выйти", [this] { screen.Exit(); });
     btn_prev_page = ftxui::Button("<", [this] {
-        if (current_page > 1)
+        if (current_page > 1) {
             current_page--;
+        }
         UpdateResultDisplay();
     });
     btn_next_page = ftxui::Button(">", [this] {
-        if (current_page < total_pages)
+        if (current_page < total_pages) {
             current_page++;
+        }
         UpdateResultDisplay();
     });
 
     menu_cont = ftxui::Container::Vertical({req_input, btn_send_req, result_panel, btn_close});
 
     form_container = ftxui::Renderer(menu_cont, [this] {
-        return ftxui::vbox({ftxui::text("T U I D B") | ftxui::center | ftxui::color(ftxui::Color::Cyan) | ftxui::bold, ftxui::separator(),
+        return ftxui::vbox({ftxui::text("T U I D B") | ftxui::center | ftxui::color(ftxui::Color::Cyan) | ftxui::bold,
+                            ftxui::separator(),
 
                             ftxui::hbox(req_input->Render(), btn_send_req->Render()), ftxui::separator(),
 
@@ -51,8 +53,6 @@ DataBaseExplorer::DataBaseExplorer(std::unique_ptr<IDatabaseConnector> conn_)
     });
 }
 
-// ftxui::Component DataBaseExplorer::CreateForm() { return form_container; }
-
 void DataBaseExplorer::RUN() { screen.Loop(form_container); }
 
 void DataBaseExplorer::UpdateResultDisplay() {
@@ -61,10 +61,11 @@ void DataBaseExplorer::UpdateResultDisplay() {
         result_panel = ftxui::Renderer([this] { return ftxui::text(last_err) | ftxui::bold | ftxui::center; });
     } else if (!resultTable.has_value()) {
         // НЕТ РЕЗУЛЬТАТОВ: только текст
-        result_panel = ftxui::Renderer([this] { return ftxui::text("No results " + resultTable.error()) | ftxui::bold | ftxui::center; });
+        result_panel = ftxui::Renderer(
+            [this] { return ftxui::text("No results " + resultTable.error()) | ftxui::bold | ftxui::center; });
     } else {
         // ЕСТЬ РЕЗУЛЬТАТЫ: таблица + пагинация
-        total_rows = resultTable.value().size();
+        total_rows = static_cast<int>(resultTable.value().size());
         total_pages = (total_rows + rows_per_page - 1) / rows_per_page;
         int start_idx = (current_page - 1) * rows_per_page;
         int end_idx = std::min(start_idx + rows_per_page, total_rows);
@@ -86,8 +87,10 @@ void DataBaseExplorer::UpdateResultDisplay() {
             ftxui::Renderer([table_element] { return table_element; }),
             ftxui::Container::Horizontal({
                 btn_prev_page,
-                ftxui::Renderer(
-                    [this] { return ftxui::text(" Page " + std::to_string(current_page) + "/" + std::to_string(total_pages)) | ftxui::vcenter; }),
+                ftxui::Renderer([this] {
+                    return ftxui::text(" Page " + std::to_string(current_page) + "/" + std::to_string(total_pages)) |
+                           ftxui::vcenter;
+                }),
                 btn_next_page,
             }) | ftxui::center,
         });

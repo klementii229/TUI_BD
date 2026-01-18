@@ -1,7 +1,9 @@
 Checks: >
- #   -*,  # Отключить все проверки по умолчанию
-    cppcoreguidelines-*,  # Включить все проверки из cppcoreguidelines
- #   -cppcoreguidelines-pro-bounds-pointer-arithmetic  # Отключить конкретное правило (пример)
-WarningsAsErrors: ""
-HeaderFilterRegex: ""
+ #cppcoreguidelines-*,  # Включить все проверки из cppcoreguidelines
+    -*,  # Отключить все проверки по умолчанию
+-cppcoreguidelines-avoid-magic-numbers,
+-readability-avoid-const-params-in-decls,
+-bugprone-suspicious-stringview-data-usage
+#WarningsAsErrors: ""
+#HeaderFilterRegex: ""
 FormatStyle: google

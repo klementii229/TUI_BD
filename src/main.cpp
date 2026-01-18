@@ -15,9 +15,11 @@ int main(void) {
     auto [host, port, database, username, password, db_type] = Form.GetConnectionParams();
     ///
     std::unique_ptr<IDatabaseConnector> conn = nullptr;
-    if (db_type == "SQLite") {
+    switch (db_type) {
+    case LoginForm::enum_db_type::SQLite:
         conn = std::make_unique<SQLiteConnector>();
-    } else {
+        break;
+    default:
         return 1;
     }
     if (!conn->Connect(database)) {
