@@ -12,8 +12,7 @@ int main(void) {
     LoginForm Form = {};
 
     Form.RUN();
-    auto [host, port, database, username, password, db_type] =
-        Form.GetConnectionParams();
+    auto [host, port, database, username, password, db_type] = Form.GetConnectionParams();
 
     std::unique_ptr<IDatabaseConnector> conn = nullptr;
     if (db_type == "SQLite") {
@@ -21,7 +20,7 @@ int main(void) {
     } else {
         return 1;
     }
-    if (!conn->Connect("test.db")) {
+    if (!conn->Connect(database)) {
         return 1;
     }
     DataBaseExplorer exp = {std::move(conn)};
