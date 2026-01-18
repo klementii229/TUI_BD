@@ -1,28 +1,28 @@
 #include "DatabaseExplorer.hpp"
 #include "LoginForm.hpp"
-#include "sqlite_connector.hpp"
+#include "SqliteConnector.hpp"
 #include <memory>
 #include <string>
 #include <vector>
-using DatabaseRow = std::vector<std::string>;
-using DatabaseResultTable = std::vector<DatabaseRow>;
+using Row = std::vector<std::string>;
+using Table = std::vector<Row>;
 
 int main(void) {
 
     LoginForm Form = {};
 
     Form.RUN();
-    auto [host, port, database, username, password, db_type] = Form.GetConnectionParams();
-    ///
+    auto Connect_Params = Form.GetConnectionParams();
+
     std::unique_ptr<IDatabaseConnector> conn = nullptr;
-    switch (db_type) {
+    switch (Connect_Params.db_type) {
     case LoginForm::enum_db_type::SQLite:
         conn = std::make_unique<SQLiteConnector>();
         break;
     default:
         return 1;
     }
-    if (!conn->Connect(database)) {
+    if (!conn->Connect(Connect_Params.database)) {
         return 1;
     }
     DataBaseExplorer exp = {std::move(conn)};
