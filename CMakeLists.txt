@@ -11,11 +11,14 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 find_package(Threads REQUIRED)
 find_package(PkgConfig REQUIRED)
 
-# Поиск libpq (PostgreSQL)
+
+#Поиск libpq (PostgreSQL)
 pkg_check_modules(LIBPQ REQUIRED libpq)
 
-# Поиск libsqlite3
+#Поиск libsqlite3
 pkg_check_modules(SQLITE3 REQUIRED sqlite3)
+
+set(FTXUI_ENABLE_INSTALL OFF CACHE BOOL "Выключить установку FTXUI в систему" FORCE)
 
 # ================================
 # Добавляем FTXUI
@@ -56,5 +59,4 @@ target_link_libraries(tui_db
         ftxui::component
         ${SQLITE3_LIBRARIES}
         ${LIBPQ_LIBRARIES}
-        #Threads::Threads
 )

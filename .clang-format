@@ -1,4 +1,9 @@
+BasedOnStyle: Google
 IndentWidth: 4
 TabWidth: 4
-ColumnLimit: 120 # Отключает ограничение по длине строки
-AllowAllArgumentsOnNextLine: false
+UseTab: Never
+ColumnLimit: 120
+AllowAllArgumentsOnNextLine: true
+BinPackArguments: true
+BinPackParameters: true
+AlignAfterOpenBracket: DontAlign
