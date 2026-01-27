@@ -1,8 +1,8 @@
 BasedOnStyle: Google
-IndentWidth: 4
+IndentWidth: 3
 TabWidth: 4
 UseTab: Never
-ColumnLimit: 120
+ColumnLimit: 140
 AllowAllArgumentsOnNextLine: true
 BinPackArguments: true
 BinPackParameters: true
