@@ -1,4 +1,5 @@
 #include "LoginForm.hpp"
+
 #include <ftxui/component/screen_interactive.hpp>
 #include <ftxui/dom/elements.hpp>
 
@@ -12,7 +13,6 @@ LoginForm::LoginForm() : screen(ftxui::ScreenInteractive::Fullscreen()) {
 
     connect_button = ftxui::Button("Подключиться", [this] {
         connection_data.db_type = static_cast<enum_db_type>(db_type_selected);
-
         screen.Exit();
     });
 }
@@ -27,10 +27,10 @@ ftxui::Component LoginForm::CreateConnectionForm() {
 
     auto renderer = Renderer(container, [this] {
         return vbox({text(" Подключение к базе данных ") | bold | color(Color::Cyan) | center, separator(),
-                     hbox(text("Хост:     "), host_input->Render()), hbox(text("Порт:     "), port_input->Render()),
-                     hbox(text("База:     "), db_input->Render()), hbox(text("Пользователь: "), user_input->Render()),
-                     hbox(text("Пароль:   "), password_input->Render()), separator(), text("Тип базы данных:"),
-                     db_type_radio->Render(), separator(), connect_button->Render() | center}) |
+                   hbox(text("Хост:     "), host_input->Render()), hbox(text("Порт:     "), port_input->Render()),
+                   hbox(text("База:     "), db_input->Render()), hbox(text("Пользователь: "), user_input->Render()),
+                   hbox(text("Пароль:   "), password_input->Render()), separator(), text("Тип базы данных:"),
+                   db_type_radio->Render(), separator(), connect_button->Render() | center}) |
                border | size(WIDTH, LESS_THAN, 80);
     });
     return renderer;
