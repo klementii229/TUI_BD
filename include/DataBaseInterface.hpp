@@ -9,9 +9,9 @@ using Table = std::vector<Row>;
 class IDatabaseConnector {
   public:
    // ##########################################
-   virtual std::expected<Table, std::string> ExecuteQuery(const std::string& query) = 0;  // Получение результатов с запроса
+   virtual std::expected<Table, std::string> FetchAll(const std::string& query) = 0;  // Получение результатов с запроса
 
-   virtual std::expected<bool, std::string> ExecuteCommand(const std::string& command) const = 0;
+   virtual std::expected<int, std::string> ExecuteUpdate(const std::string& command) const = 0;
    // Выполнение запроса без результата
    // ##########################################
 

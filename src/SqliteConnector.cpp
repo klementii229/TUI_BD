@@ -18,7 +18,7 @@ std::expected<bool, std::string> SQLiteConnector::Connect(const std::string& con
    return std::unexpected(errorMessage);
 }
 
-std::expected<Table, std::string> SQLiteConnector::ExecuteQuery(const std::string& query) {
+std::expected<Table, std::string> SQLiteConnector::FetchAll(const std::string& query) {
    Table result;
    sqlite3_stmt* stmt{};
 
@@ -40,7 +40,6 @@ std::expected<Table, std::string> SQLiteConnector::ExecuteQuery(const std::strin
       }
       result.push_back(row);
    }
-
    if (ret_code != SQLITE_DONE) {
       std::string error_message = sqlite3_errmsg(db);
       constexpr std::source_location loc = std::source_location::current();
@@ -52,15 +51,23 @@ std::expected<Table, std::string> SQLiteConnector::ExecuteQuery(const std::strin
    return result;
 }
 
-std::expected<bool, std::string> SQLiteConnector::ExecuteCommand(const std::string& query) const {
-   int ret_code = sqlite3_exec(db, query.c_str(), nullptr, nullptr, nullptr);
+std::expected<int, std::string> SQLiteConnector::ExecuteUpdate(const std::string& query) const {
+   char* error_msg = nullptr;
+
+   int ret_code = sqlite3_exec(db, query.c_str(), nullptr, nullptr, &error_msg);
+
    if (ret_code != SQLITE_OK) {
       std::string error_message = sqlite3_errmsg(db);
       constexpr std::source_location loc = std::source_location::current();
       return std::unexpected(
-          std::format("Ошибка запроса в SQLiteConnector::ExecuteCommand {}:{} {}", loc.line(), loc.column(), error_message));
+          std::format("Ошибка запроса в SQLiteConnector::ExecuteQuery {}:{} {}", loc.line(), loc.column(), error_message));
    }
-   return true;
+   int rows_affected = sqlite3_changes(db);
+   if (error_msg) {
+      sqlite3_free(error_msg);
+   }
+
+   return rows_affected;
 }
 
 std::expected<Row, std::string> SQLiteConnector::GetTableList() {
@@ -105,7 +112,7 @@ std::expected<Row, std::string> SQLiteConnector::GetTableSchema(const std::strin
       std::string error_message = sqlite3_errmsg(db);
       auto loc = std::source_location::current();
       return std::unexpected(std::format("Ошибка получения схемы таблицы {} в SQLiteConnector::GetTableSchema {}:{} {}", tableName,
-          loc.line(), loc.column(), error_message));
+                                         loc.line(), loc.column(), error_message));
    }
 
    Row result;

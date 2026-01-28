@@ -28,5 +28,5 @@ class DataBaseExplorer {
    std::string req_text;
    ftxui::Component btn_send_req;
 
-   ftxui::Table table;
+   ftxui::Component table_component;
 };

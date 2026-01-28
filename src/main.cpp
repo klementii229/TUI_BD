@@ -27,6 +27,7 @@ int main(void) {
         return 1;
         }*/
    std::unique_ptr<IDatabaseConnector> conn = std::make_unique<SQLiteConnector>();
+   conn->Connect("chinook.db");
    DataBaseExplorer exp = {std::move(conn)};
    exp.RUN();
    return 0;

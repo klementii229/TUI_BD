@@ -9,8 +9,8 @@ class SQLiteConnector : public IDatabaseConnector {
 
   public:
    // ##############################################################
-   std::expected<bool, std::string> ExecuteCommand(const std::string& command) const override;
-   std::expected<Table, std::string> ExecuteQuery(const std::string& query) override;
+   std::expected<int, std::string> ExecuteUpdate(const std::string& query) const override;
+   std::expected<Table, std::string> FetchAll(const std::string& query) override;
    // ##############################################################
    // ##############################################################
    std::expected<Row, std::string> GetTableList() override;
